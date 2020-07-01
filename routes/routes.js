@@ -1,15 +1,24 @@
 const express = require("express")
 const router = express.Router()
-const projectData = { 1: "Hello" }
+require("dotenv").config()
+
+//Date
+const d = new Date()
+const newDate = d.getDate() + "." + d.getMonth() + "." + d.getFullYear()
+const projectData = {
+	Date: newDate,
+	Temperature: "16",
+	Content: "Hellooo",
+}
 
 //OpenWeather API details
-const apiKey = "&appid=148d202ca6d85b81b4c9a74c19b95b6c"
+const apiKey = process.env.API_KEY
 const baseUrl = "https://api.openweathermap.org/data/2.5/weather?q="
 const units = "&units=metric"
 
 //Get routes
 router.get("/", (req, res) => {
-	res.send(`<h1>My first GET!</h1>`)
+	res.send(projectData)
 })
 
 router.get("/db", (req, res) => {
