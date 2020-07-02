@@ -17,29 +17,28 @@ let projectData = []
 
 //OpenWeather API details
 const api = {
-	key: "&appid=148d202ca6d85b81b4c9a74c19b95b6c",
-	//key: process.env.API_KEY,
+	key: process.env.API_KEY,
 	url: "https://api.openweathermap.org/data/2.5/weather?q=",
-	units: "&units=metric"
+	units: "&units=metric",
 }
 
 //Get routes
 router.get("/db", (req, res) => {
-	console.log(req.requestTime)
+	console.log(req.requestTime + "url" + req.url + " Method:" + req.method)
 	res.send(projectData)
 })
 
 //Server Side data "fetch"
 let fetchWeather = async (url, place, units, key) => {
 	const weatherData = await fetch(url + place + units + key, {
-		timeout: 5000
+		timeout: 5000,
 	}).then((data) => data.json())
 
 	try {
 		let dataHolder = {
 			temp: weatherData.main.temp,
 			description: weatherData.weather[0].description,
-			name: weatherData.name
+			name: weatherData.name,
 		}
 
 		return dataHolder
@@ -59,7 +58,7 @@ router.post("/postData", (req, res) => {
 				temperature: data.temp,
 				description: data.description,
 				time: req.requestTime,
-				feelings
+				feelings,
 			}
 			projectData.push(sender)
 
@@ -70,6 +69,7 @@ router.post("/postData", (req, res) => {
 			console.log("Maszine going craze", err)
 			res.send("Sorry, something went wrong")
 		})
+	console.log(req.requestTime + "url" + req.url + " Method:" + req.method)
 })
 
 module.exports = router
