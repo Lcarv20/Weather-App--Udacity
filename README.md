@@ -24,7 +24,7 @@
 
 1. nodemon
 
-- note: "API key is not included in this project"
+- note: "API key is not included in this project, to test you must create a .env file on the root directory and create the API_KEY variable with the api key from openweather"
 
 ## Explanation
 
