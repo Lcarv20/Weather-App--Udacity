@@ -13,22 +13,7 @@ let requestTime = function (req, res, next) {
 router.use(requestTime)
 
 //Data holder
-let projectData = [
-	{
-		name: "Vila Real",
-		temperature: 23.06,
-		description: "clear sky",
-		time: "17:55:11 -> 2/6/2020",
-		feelings: "Hi I am feeling awesome"
-	},
-	{
-		name: "Porto",
-		temperature: 17.07,
-		description: "clear sky",
-		time: "17:55:11 -> 2/6/2020",
-		feelings: "Hi I am feeling awesome"
-	}
-]
+let projectData = []
 
 //OpenWeather API details
 const api = {
@@ -44,6 +29,7 @@ router.get("/db", (req, res) => {
 	res.send(projectData)
 })
 
+//Server Side data "fetch"
 let fetchWeather = async (url, place, units, key) => {
 	const weatherData = await fetch(url + place + units + key, {
 		timeout: 5000

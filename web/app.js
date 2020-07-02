@@ -1,3 +1,6 @@
+//Global Variable
+const target = document.getElementById("entryHolder")
+
 //Data Fetch
 const getData = async function (url) {
 	const retrieveData = await fetch(url).then((data) => data.json())
@@ -12,22 +15,12 @@ const getData = async function (url) {
 	} catch (error) {
 		document.getElementById("entryHolder").innerHTML =
 			"An error ocurred while loading ... please reload the page"
-		console.log("error", error)
+		console.error("Error", error)
 	}
 }
 
-//Dev testing functions
-function updateUI() {
-	getData("/db").then((data) => {
-		for (let entry of data) {
-			printData(entry)
-		}
-	})
-}
-
-//Data Printer
+//Data Printer aka template function
 function printData(entry) {
-	const target = document.getElementById("entryHolder")
 	const template = `
     <div class="w3-third w3-center w3-padding w3-border w3-border-white w3-round-large">
     <div id="local">Local: ${entry.name}</div>
@@ -40,7 +33,7 @@ function printData(entry) {
 	target.innerHTML += template
 }
 
-//post Data
+//Post Data on click
 document.getElementById("generate").addEventListener("click", function (e) {
 	//Get data from form
 	const zip = document.getElementById("zip").value
@@ -58,9 +51,10 @@ document.getElementById("generate").addEventListener("click", function (e) {
 			if (entry === undefined) {
 				throw "ERRORR"
 			}
+			document.getElementById("empty-list").style.display = " none"
 			printData(entry)
 		})
-		.catch((err) => console.log("Wrong Address", err))
+		.catch((err) => console.error("Wrong Address", err))
 })
 
 const postData = async function (url, data) {
@@ -85,4 +79,13 @@ const postData = async function (url, data) {
 	}
 }
 
-document.onload = updateUI()
+//On load fetches data from endpoint and updates UI
+document.onload = getData("/db").then((data) => {
+	if (data.length === 0) {
+		target.innerHTML = `<h1 id="empty-list" class="w3-opacity w3-center">No entries yet</h1>`
+		return
+	}
+	for (let entry of data) {
+		printData(entry)
+	}
+})
