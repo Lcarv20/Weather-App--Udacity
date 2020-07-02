@@ -17,6 +17,7 @@ const getData = async function (url) {
 	}
 }
 
+//Dev testing functions
 getData("/db").then((data) => {
 	for (let entry of data) {
 		printData(entry)
@@ -38,14 +39,24 @@ function printData(entry) {
 }
 
 //post Data
-const apiData = async () => {
-	return await fetch("/api")
-		.then((api) => api.json())
-		.then((api) => console.log(api))
-}
+
+document.getElementById("generate").addEventListener("click", function (e) {
+	//Get data from form
+	const getZip = document.getElementById("zip").value
+	const getFeelings = document.getElementById("feelings").value
+	//Verifying if user typed data
+	if (getZip.length === 0) {
+		alert("Please provide ZIP/Location")
+		return
+	} else if (getFeelings.length === 0) {
+		alert("Please provide some content")
+		return
+	}
+	postData("/postData", { getZip, getFeelings })
+})
 
 const postData = async function (url, data) {
-	console.log(data)
+	//console.log(data)
 	const method = {
 		method: "POST",
 		credentials: "same-origin",
@@ -57,17 +68,9 @@ const postData = async function (url, data) {
 	const response = await fetch(url, method)
 
 	try {
-		const newData = await response.json()
+		const newData = await response.text()
 		console.log(newData)
 	} catch (error) {
 		console.log("Error", error)
 	}
 }
-
-// postData("/postData", {
-// 	Braga: {
-// 		Date: 123545354,
-// 		Temperature: "16",
-// 		Content: "Hellooo",
-// 	},
-// })
